@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -36,8 +36,8 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
+        'api' => [
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
     ],
@@ -111,5 +111,9 @@ return [
     */
 
     'password_timeout' => 10800,
-
+    'admin' => [
+        'name' => env("ADMIN_NAME"),
+        'email' => env("ADMIN_EMAIL"),
+        'password' => env("ADMIN_PASSWORD"),
+    ]
 ];
