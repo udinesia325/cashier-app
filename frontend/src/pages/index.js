@@ -1,3 +1,5 @@
+import Card from '@/components/Card'
+import Heading from '@/components/Heading'
 import Head from 'next/head'
 
 export default function Home() {
@@ -10,7 +12,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        Hello world
+        <Heading />
+        <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2 cursor-pointer">
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </div>
       </main>
     </>
   )
