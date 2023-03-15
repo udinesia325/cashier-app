@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
       <main>
         <Heading />
-        <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2">
+        <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2 cursor-pointer">
           <Card />
           <Card />
           <Card />
