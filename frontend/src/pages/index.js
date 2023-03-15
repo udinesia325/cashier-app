@@ -1,3 +1,4 @@
+import Card from '@/components/Card'
 import Heading from '@/components/Heading'
 import Head from 'next/head'
 
@@ -12,7 +13,26 @@ export default function Home() {
       </Head>
       <main>
         <Heading />
-        Hello world
+        <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2">
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </div>
       </main>
     </>
   )

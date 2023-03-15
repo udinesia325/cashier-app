@@ -5,7 +5,7 @@ import Main from '@/components/Main'
 
 export default function Layout({ children }) {
     return (
-        <div className='flex min-h-screen min-w-full'>
+        <div className='flex h-screen min-w-full'>
             <Sidebar />
             <Main>{children}</Main>
             <Invoice />
