@@ -23,7 +23,7 @@ class Jwt
     public function handle(Request $request, Closure $next)
     {
         try {
-            JWTAuth::parseToken($request->bearerToken())->authenticate();
+            JWTAuth::parseToken($request)->authenticate();
             return $next($request);
         } catch (JWTException $e) {
             if (
@@ -31,20 +31,20 @@ class Jwt
                 $e instanceof TokenBlacklistedException ||
                 $e instanceof PayloadException
             ) {
-                return $this->invalidResponse("token invalid");
+                return $this->invalidResponse("token invalid", 401);
             }
             if ($e instanceof TokenExpiredException) {
-                return $this->invalidResponse("token expired");
+                return $this->invalidResponse("token expired", 401);
             }
-            return $this->invalidResponse("token not provided");
+            return $this->invalidResponse("token not provided", 404);
         }
     }
-    public function invalidResponse($message)
+    public function invalidResponse($message, $status = 400)
     {
         return response()->json([
             "status" => false,
             "message" => $message,
             "data" => ""
-        ]);
+        ], $status);
     }
 }

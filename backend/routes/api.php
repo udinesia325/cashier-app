@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,15 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
         Route::post('refresh', 'refresh');
         Route::post('me', 'me');
     });
+});
+Route::controller(ProductController::class)->group(function () {
+    Route::get("/products", "index");
+});
+
+
+Route::any("/{any}", function () {
+    return response()->json([
+        "status" => false,
+        "message" => "not found"
+    ], 404);
 });

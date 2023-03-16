@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    //
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('jwt', ['except' => ['login']]);
-    }
-
     /**
      * Get a JWT via given credentials.
      *
@@ -43,7 +32,7 @@ class AuthController extends Controller
     {
         $token = auth()->user();
         if (!$token) {
-            return response()->json(["message" => "token invalid"]);
+            return response()->json(["message" => "token invalid"], 400);
         }
         return response()->json($token);
     }
