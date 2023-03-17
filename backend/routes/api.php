@@ -25,7 +25,11 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
     });
 });
 Route::controller(ProductController::class)->group(function () {
+    Route::get("/products/{products}", "show");
     Route::get("/products", "index");
+    Route::middleware('jwt')->group(function () {
+        Route::post("/products", "store");
+    });
 });
 
 
