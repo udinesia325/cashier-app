@@ -60,10 +60,18 @@ class ProductController extends Controller
             ]);
             return $this->response($product, "product added successfully", 201);
         } catch (Throwable $e) {
-            if (env("APP_DEBUG")) {
-                return $this->response(message: $e->getMessage(), code: 501, status: false);
-            }
-            return $this->response(message: "Internal server error", code: 501, status: false);
+            return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
+        }
+    }
+    public function delete(Products $products)
+    {
+        var_dump($products);
+        try {
+            unlink(public_path($products->image));
+            $products->delete();
+            return $this->response(message: "successfully deleted", data: $products);
+        } catch (Throwable $e) {
+            return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
     }
 }

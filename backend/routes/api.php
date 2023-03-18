@@ -25,15 +25,24 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
     });
 });
 Route::controller(ProductController::class)->group(function () {
-    Route::get("/products/{products}", "show");
+    Route::get("/products/{products}", "show")
+        ->missing(fn () =>  redirect(route("notfound")));
     Route::get("/products", "index");
     Route::middleware('jwt')->group(function () {
         Route::post("/products", "store");
+        Route::delete("/products/{products}", "delete")
+            ->missing(fn () =>  redirect(route("notfound")));
     });
 });
 
 
-Route::any("/{any}", function () {
+Route::any("/", function () {
+    return response()->json([
+        "status" => false,
+        "message" => "not found"
+    ], 404);
+})->name("notfound");
+Route::fallback(function () {
     return response()->json([
         "status" => false,
         "message" => "not found"
