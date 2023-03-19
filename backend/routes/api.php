@@ -32,6 +32,8 @@ Route::controller(ProductController::class)->group(function () {
         Route::post("/products", "store");
         Route::delete("/products/{products}", "delete")
             ->missing(fn () =>  redirect(route("notfound")));
+        Route::put("/products/{products}", "update")
+            ->missing(fn () =>  redirect(route("notfound")));
     });
 });
 

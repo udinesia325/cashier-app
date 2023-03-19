@@ -22,14 +22,6 @@ class ProductController extends Controller
         ];
         return $products;
     }
-    public function response($data = null, $message = '', $code = 200, $status = true)
-    {
-        return response()->json([
-            "status" => $status,
-            "message" => $message,
-            "data" => $data
-        ], $code);
-    }
     public function show(Products $products)
     {
         return $this->response($products);
@@ -70,6 +62,39 @@ class ProductController extends Controller
             unlink(public_path($products->image));
             $products->delete();
             return $this->response(message: "successfully deleted", data: $products);
+        } catch (Throwable $e) {
+            return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
+        }
+    }
+    public function update(Request $request, Products $products)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'name' => "required|min:2|max:255",
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'price' => "required|integer"
+        ]);
+
+        if ($validator->fails()) {
+            return $this->response([
+                "error" => $validator->errors()
+            ], "validation error", 422, false);
+        }
+        $input = $request->only("name", "price");
+        $image = $request->file("image");
+        $path = "images/";
+        if ($image) {
+            $filename = $path . Str::random(4) . time() . "." . $image->getClientOriginalExtension();
+            // hapus gambar lama 
+            unlink(public_path($products->image));
+            $image->move($path, $filename);
+        }
+        try {
+            $products->name = $input["name"];
+            $products->price = $input["price"];
+            $products->image =  $image ? $filename : $products->image;
+            $products->save();
+            return $this->response($products, "product updated successfully", 201);
         } catch (Throwable $e) {
             return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
