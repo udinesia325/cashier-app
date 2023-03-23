@@ -25,19 +25,14 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
         Route::post('me', 'me');
     });
 });
-Route::controller(ProductController::class)->group(function () {
-    Route::get("/products/{products}", "show")
-        ->missing(fn () =>  redirect(route("notfound")));
-    Route::get("/products", "index");
-    Route::middleware('jwt')->group(function () {
-        Route::post("/products", "store");
-        Route::delete("/products/{products}", "delete")
-            ->missing(fn () =>  redirect(route("notfound")));
-        Route::put("/products/{products}", "update")
-            ->missing(fn () =>  redirect(route("notfound")));
-    });
-});
 
+Route::middleware("jwt")->apiResource("products", ProductController::class, ["as" => "api"])->missing(function () {
+    return response()->json([
+        "status" => false,
+        "message" => "not found",
+        "data" => null
+    ], 404);
+});
 Route::controller(InvoicesController::class)->group(function () {
     Route::get("/invoices", "index");
     Route::post("/invoices", "create");
