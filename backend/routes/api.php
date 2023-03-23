@@ -33,20 +33,10 @@ Route::middleware("jwt")->apiResource("products", ProductController::class, ["as
         "data" => null
     ], 404);
 });
-Route::controller(InvoicesController::class)->group(function () {
-    Route::get("/invoices", "index");
-    Route::post("/invoices", "create");
-});
-
-Route::any("/", function () {
+Route::middleware("jwt")->apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
     return response()->json([
         "status" => false,
-        "message" => "not found"
-    ], 404);
-})->name("notfound");
-Route::fallback(function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found"
+        "message" => "not found",
+        "data" => null
     ], 404);
 });
