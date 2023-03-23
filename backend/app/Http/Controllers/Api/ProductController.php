@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Products;
 use Illuminate\Http\Request;
@@ -26,20 +28,8 @@ class ProductController extends Controller
     {
         return $this->response($products);
     }
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => "required|min:2|max:255",
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'price' => "required|integer"
-        ]);
-
-        if ($validator->fails()) {
-            return $this->response([
-                "error" => $validator->errors()
-            ], "validation error", 422, false);
-        }
-        // return "oke";
         $input = $request->only("name", "price");
         $image = $request->file("image");
         $path = "images/";
@@ -57,7 +47,6 @@ class ProductController extends Controller
     }
     public function delete(Products $products)
     {
-        var_dump($products);
         try {
             unlink(public_path($products->image));
             $products->delete();
@@ -66,20 +55,8 @@ class ProductController extends Controller
             return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
     }
-    public function update(Request $request, Products $products)
+    public function update(UpdateProductRequest $request, Products $products)
     {
-
-        $validator = Validator::make($request->all(), [
-            'name' => "required|min:2|max:255",
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'price' => "required|integer"
-        ]);
-
-        if ($validator->fails()) {
-            return $this->response([
-                "error" => $validator->errors()
-            ], "validation error", 422, false);
-        }
         $input = $request->only("name", "price");
         $image = $request->file("image");
         $path = "images/";

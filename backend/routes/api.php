@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,10 @@ Route::controller(ProductController::class)->group(function () {
     });
 });
 
+Route::controller(InvoicesController::class)->group(function () {
+    Route::get("/invoices", "index");
+    Route::post("/invoices", "create");
+});
 
 Route::any("/", function () {
     return response()->json([

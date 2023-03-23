@@ -28,10 +28,9 @@ class DatabaseSeeder extends Seeder
         ]);
         for ($i = 0; $i <= 50; $i++) {
             Products::create([
-                "uuid" => Str::random(10),
                 "name" => fake()->name(),
                 "price" => fake()->numberBetween(40000, 80000),
-                "image" => fake()->imageUrl()
+                "image" => ""
             ]);
         }
     }
