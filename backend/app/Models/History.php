@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class History extends Model
 {
     use HasFactory;
+    protected $fillable = ["invoice_id", "subtotal", "pay", "change"];
 }

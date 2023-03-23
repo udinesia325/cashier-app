@@ -23,7 +23,8 @@ class StoreInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "data" => ["required", "json", new InvoiceJsonRule]
+            "data" => ["required", "json", new InvoiceJsonRule],
+            "pay" => "required|numeric"
         ];
     }
 }

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\ProductController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,17 +25,19 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
     });
 });
 
-Route::middleware("jwt")->apiResource("products", ProductController::class, ["as" => "api"])->missing(function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found",
-        "data" => null
-    ], 404);
-});
-Route::middleware("jwt")->apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found",
-        "data" => null
-    ], 404);
+Route::middleware("jwt")->group(function () {
+    Route::apiResource("products", ProductController::class, ["as" => "api"])->missing(function () {
+        return response()->json([
+            "status" => false,
+            "message" => "not found",
+            "data" => null
+        ], 404);
+    });
+    Route::apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
+        return response()->json([
+            "status" => false,
+            "message" => "not found",
+            "data" => null
+        ], 404);
+    });
 });
