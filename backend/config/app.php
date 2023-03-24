@@ -212,4 +212,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    // data per page when using pagination
+    'data_per_page' => env("DATA_PER_PAGE", 10),
+
 ];

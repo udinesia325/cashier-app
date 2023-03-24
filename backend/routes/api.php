@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HistoriesController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\ProductController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,27 +26,34 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
     });
 });
 
-Route::middleware("jwt")->apiResource("products", ProductController::class, ["as" => "api"])->missing(function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found",
-        "data" => null
-    ], 404);
-});
-Route::controller(InvoicesController::class)->group(function () {
-    Route::get("/invoices", "index");
-    Route::post("/invoices", "create");
-});
+Route::middleware("jwt")->group(function () {
+    //for products
+    Route::apiResource("products", ProductController::class, ["as" => "api"])->missing(function () {
+        return response()->json([
+            "status" => false,
+            "message" => "not found",
+            "data" => null
+        ], 404);
+    });
 
-Route::any("/", function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found"
-    ], 404);
-})->name("notfound");
-Route::fallback(function () {
-    return response()->json([
-        "status" => false,
-        "message" => "not found"
-    ], 404);
+    // for invoicea
+    Route::apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
+        return response()->json([
+            "status" => false,
+            "message" => "not found",
+            "data" => null
+        ], 404);
+    });
+
+    //for histories
+    Route::controller(HistoriesController::class)->group(function () {
+        Route::get("/histories", "index");
+        Route::get("/histories/{history}", "show")->missing(function () {
+            return response()->json([
+                "status" => false,
+                "message" => "not found",
+                "data" => null
+            ], 404);
+        });
+    });
 });
