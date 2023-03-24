@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('jwt')->prefix('auth')->group(function () {
     Route::controller(AuthController::class)->group(function () {
-        Route::post('login', 'login')->withoutMiddleware("jwt")->name("login")->name("api.auth.login");
+        Route::post('login', 'login')->withoutMiddleware("jwt")->name("api.auth.login");
         Route::post('logout', 'logout')->name("api.auth.logout");
         Route::post('refresh', 'refresh')->name("api.auth.refresh");
         Route::post('me', 'me')->name("api.auth.me");

@@ -12,12 +12,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $request->validate([
+            "email" => "required|email",
+            "password" => "required"
+        ]);
+        $credentials = $request->only(["email", "password"]);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return $this->response(message: 'Unauthorized', status: false, code: 401);
         }
 
         return $this->respondWithToken($token);
@@ -32,7 +36,7 @@ class AuthController extends Controller
     {
         $token = auth()->user();
         if (!$token) {
-            return response()->json(["message" => "token invalid"], 400);
+            return $this->response(message: "token invalid", status: false, code: 400);
         }
         return response()->json($token);
     }
@@ -45,8 +49,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return $this->response(message: "Successfully logged out");
     }
 
     /**
