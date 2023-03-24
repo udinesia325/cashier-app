@@ -7,16 +7,14 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Products;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = ProductResource::collection(Products::paginate(10));
+        $products = ProductResource::collection(Products::paginate(config("app.data_per_page")));
 
         $products->with = [
             "status" => true,
