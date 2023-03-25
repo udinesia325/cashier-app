@@ -47,13 +47,13 @@ Route::middleware("jwt")->group(function () {
 
     //for histories
     Route::controller(HistoriesController::class)->group(function () {
-        Route::get("/histories", "index");
+        Route::get("/histories", "index")->name("api.histories.index");
         Route::get("/histories/{history}", "show")->missing(function () {
             return response()->json([
                 "status" => false,
                 "message" => "not found",
                 "data" => null
             ], 404);
-        });
+        })->name("api.histories.show");
     });
 });
