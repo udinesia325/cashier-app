@@ -72,7 +72,7 @@ class ProductController extends Controller
             $products->price = $input["price"];
             $products->image =  $image ? $filename : $products->image;
             $products->save();
-            return $this->response($products, "product updated successfully", 201);
+            return $this->response($products, "product updated successfully");
         } catch (Throwable $e) {
             return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
