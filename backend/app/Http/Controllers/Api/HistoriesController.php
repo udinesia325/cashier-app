@@ -23,6 +23,6 @@ class HistoriesController extends Controller
     }
     public function show(History $history)
     {
-        return $this->response($history->with('invoice')->get());
+        return $this->response($history->with('invoice')->first());
     }
 }
