@@ -27,7 +27,7 @@ class AuthTest extends TestCase
             "password" => config("auth.admin.password")
         ])
             ->assertStatus(200)
-            ->assertJsonStructure(["access_token", "token_type", "expires_in"]);
+            ->assertJsonPath("data.email", config("auth.admin.email"));
     }
     public function test_invalid_login_credential()
     {
@@ -62,6 +62,11 @@ class AuthTest extends TestCase
 
         $this->postJson($this->url_with_token(route("api.auth.refresh")))
             ->assertStatus(200)
-            ->assertJsonStructure(["access_token", "token_type", "expires_in"]);
+            ->assertJson([
+                "status" => true,
+                "data" => [
+                    "token_type" => "bearer"
+                ]
+            ]);
     }
 }
