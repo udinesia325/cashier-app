@@ -1,14 +1,12 @@
-import { login } from '@/features/slices/authSlice'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { login } from '@/features/thunk/auth'
+import useAuth from '@/hooks/useAuth'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 export default function Login() {
     const dispatch = useDispatch()
-    const authState = useSelector(state => state.auth)
-    const router = useRouter()
-    const { errors, message } = authState
-    console.log(authState)
+    const auth = useAuth()
+    const { errors, message } = auth
     const [body, setBody] = useState({
         email: "",
         password: ""
@@ -25,11 +23,6 @@ export default function Login() {
         e.preventDefault()
         dispatch(login(body))
     }
-    useEffect(() => {
-        if (authState.access_token) {
-            router.push("/")
-        }
-    }, [authState])
     return (
         <div className='w-full h-screen flex'>
             <form className='w-96 h-max shadow-md shadow-gray-200 rounded-sm m-auto -translate-y-32 flex flex-col gap-y-3 items-center px-3 py-4' onSubmit={handleSubmit}>
@@ -38,7 +31,7 @@ export default function Login() {
                 <RenderField label="Email" type="email" value={body} onChange={onChange} message={errors?.email || ''} />
 
                 <RenderField label="Password" type="password" value={body} onChange={onChange} message={errors?.password || ''} />
-                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={authState.loading}>{authState.loading ? "Loading ..." : "Login"}</button>
+                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={auth.loading}>{auth.loading ? "Loading ..." : "Login"}</button>
             </form>
         </div >
     )

@@ -4,17 +4,21 @@ import Sidebar from '@/components/Sidebar'
 import Main from '@/components/Main'
 import { useRouter } from 'next/router'
 import AddProduct from './AddProduct'
-import { getStorage } from '@/utils/storage'
+import useAuth from '@/hooks/useAuth'
 
 export default function Layout({ children }) {
     const { pathname } = useRouter()
     const router = useRouter()
+    const auth = useAuth()
     useEffect(() => {
-        if (getStorage("access_token") == null && pathname != "/login") {
-            router.replace("/login")
+        if (auth.name == '') {
+            router.push("/login")
         }
-    }, [pathname])
+    }, [pathname, auth])
     if (pathname == "/login") {
+        if (auth.name) {
+            router.push("/")
+        }
         return children
     }
     return (

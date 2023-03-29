@@ -1,18 +1,8 @@
-import { delStorage, setStorage } from "@/utils/storage";
-import axios from "axios";
-import { baseUrl } from "../axiosInstance";
+import { login, logout } from "../thunk/auth";
 
-const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
+const { createSlice } = require("@reduxjs/toolkit");
 
-export const login = createAsyncThunk("auth/login", async ({ email, password }, thunkApi) => {
-    try {
-        const response = await axios.post(`${baseUrl}/auth/login`, { email, password })
-        return response.data;
-    } catch (error) {
-        return thunkApi.rejectWithValue(error.response.data);
-    }
 
-})
 const initialState = {
     name: "",
     email: "",
@@ -35,7 +25,6 @@ const authSlice = createSlice({
             state.access_token = access_token
             state.name = name
             state.loading = false
-            setStorage("access_token", access_token)
         })
         builder.addCase(login.rejected, (state, action) => {
             state.message = action.payload?.message
@@ -44,7 +33,12 @@ const authSlice = createSlice({
         })
         builder.addCase(login.pending, (state) => {
             state.loading = true
-            delStorage("access_token")
+        })
+        builder.addCase(logout.fulfilled, (state) => {
+            return initialState
+        })
+        builder.addCase(logout.rejected, (state, payload) => {
+            console.log("logout failed")
         })
     }
 })

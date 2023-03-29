@@ -1,8 +1,11 @@
 import Card from '@/components/Card'
 import Heading from '@/components/Heading'
+import useAuth from '@/hooks/useAuth'
 import Head from 'next/head'
 
 export default function Home() {
+  const auth = useAuth()
+  console.log(auth)
   return (
     <>
       <Head>
