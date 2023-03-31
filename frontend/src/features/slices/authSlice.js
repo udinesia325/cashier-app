@@ -1,6 +1,5 @@
-import { login, logout } from "../thunk/auth";
-
-const { createSlice } = require("@reduxjs/toolkit");
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios"
 
 
 const initialState = {
@@ -13,13 +12,36 @@ const initialState = {
     errors: []
 }
 
+export const login = createAsyncThunk("auth/login", async ({ email, password }, thunkApi) => {
+    try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, { email, password })
+        return response.data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data);
+    }
+
+})
+export const logout = createAsyncThunk("auth/logout", async (access_token, thunkApi) => {
+    try {
+        const response = await axios.post(`${baseUrl}/auth/logout`, { token: access_token })
+        return response.data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data);
+    }
+
+})
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        setToken(state, action) {
+            state.access_token = action.payload
+        }
+    },
     extraReducers: builder => {
         builder.addCase(login.fulfilled, (state, action) => {
             const { email, name, role, access_token } = action?.payload?.data
+            console.log("sukses", action.payload)
             state.email = email
             state.role = role
             state.access_token = access_token
@@ -42,5 +64,5 @@ const authSlice = createSlice({
         })
     }
 })
-
+export const { setToken } = authSlice.actions
 export default authSlice.reducer

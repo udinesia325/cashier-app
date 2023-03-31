@@ -1,4 +1,4 @@
-import { login } from '@/features/thunk/auth'
+import { login } from '@/features/slices/authSlice'
 import useAuth from '@/hooks/useAuth'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'

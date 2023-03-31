@@ -1,4 +1,4 @@
-import { logout } from '@/features/thunk/auth'
+import { logout } from '@/features/slices/authSlice'
 import useAuth from '@/hooks/useAuth'
 import React from 'react'
 import { useDispatch } from 'react-redux'
