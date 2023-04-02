@@ -1,6 +1,6 @@
 import axios from "axios"
 import { store } from "./store"
-import { setToken } from "./slices/authSlice"
+import { resetUser, setToken } from "./slices/authSlice"
 
 export const baseUrl = "http://localhost:8000/api"
 
@@ -26,6 +26,9 @@ const refreshToken = async () => {
         if (process.env.NODE_ENV == "development") {
             console.log({ error })
         }
+        if (error.response.data.message == "token expired") {
+            store.dispatch(resetUser())
+        }
     }
 }
 
@@ -44,23 +47,11 @@ axiosInstance.interceptors.response.use(
         const prevReq = error?.config
         if (error.response.status == 401 && !prevReq.sent) {
             prevReq.sent = true
-            try {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`, {}, {
-                    headers: {
-                        Authorization: `Bearer ${store.getState().auth.access_token}`
-                    }
-                })
-                const token = response.data.data.access_token
-                prevReq.headers.Authorization = `Bearer ${token}`
-                store.dispatch(setToken(token))
-                return axiosInstance(prevReq)
+            const token = await refreshToken()
+            prevReq.headers.Authorization = `Bearer ${token}`
+            store.dispatch(setToken(token))
+            return axiosInstance(prevReq)
 
-            } catch (error) {
-                if (process.env.NODE_ENV == "development") {
-                    console.log({ error })
-                }
-                return axiosInstance.interceptors.response.eject(error)
-            }
         }
         return axiosInstance.interceptors.response.eject(error)
     }
