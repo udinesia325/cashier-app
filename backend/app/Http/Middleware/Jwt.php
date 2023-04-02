@@ -32,8 +32,10 @@ class Jwt
                 $e instanceof PayloadException
             ) {
                 return $this->invalidResponse("token invalid", 401);
-            }
-            if ($e instanceof TokenExpiredException) {
+            } else if ($e instanceof TokenExpiredException) {
+                if ($request->path() == "api/auth/refresh") {
+                    return $next($request);
+                }
                 return $this->invalidResponse("token expired", 401);
             }
             return $this->invalidResponse("token not provided", 404);
