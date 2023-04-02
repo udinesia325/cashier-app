@@ -1,22 +1,18 @@
 import Card from '@/components/Card'
 import Heading from '@/components/Heading'
-import axiosInstance from '@/features/axiosInstance'
-import { store } from '@/features/store'
-import useAuth from '@/hooks/useAuth'
+import { useGetProductsQuery } from '@/features/api/productsApi'
+import { setProducts } from '@/features/slices/productsSlice'
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 export default function Home() {
-  const auth = useAuth()
-  useEffect(() => {
-    if (auth.access_token) {
-      axiosInstance.get("/products").then(data => {
-        console.log(data)
-      })
-    }
-  }, [auth])
-  console.log(store.getState().auth.access_token)
+  const dispatch = useDispatch()
+  const { data, isLoading } = useGetProductsQuery()
 
+  if (data?.length && !isLoading) {
+    dispatch(setProducts(data))
+  }
   return (
     <>
       <Head>
@@ -28,24 +24,10 @@ export default function Home() {
       <main>
         <Heading />
         <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2 cursor-pointer">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {isLoading && <h1 className="text-center text-2xl font-semibold">Loading ...</h1>}
+          {data?.length && data.map(d => (
+            <Card key={d.uuid} name={d.name} price={d.price} image={`http://localhost:8000/${d.image}`} />
+          ))}
         </div>
       </main>
     </>
