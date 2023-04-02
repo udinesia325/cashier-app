@@ -1,5 +1,5 @@
-import { AddBoxOutlined, AddOutlined, IndeterminateCheckBoxOutlined, RemoveOutlined } from '@mui/icons-material'
 import React from 'react'
+import Icon from './Icon'
 
 export default function CardInvoiceItem() {
     return (
@@ -8,9 +8,9 @@ export default function CardInvoiceItem() {
             <h1 className='col-span-2 font-semibold my-auto'>Nama Makanan</h1>
             <span className='col-span-1 my-auto font-bold text-primary'>Rp. 14000</span>
             <div className='col-span-1 my-auto pr-3 flex justify-between items-center'>
-                <button className='bg-primary flex items-center justify-center p-[1px] rounded-sm disabled:bg-opacity-50'><RemoveOutlined htmlColor='white' fontSize='small' /></button>
+                <button className='bg-primary flex items-center justify-center p-[1px] rounded-sm disabled:bg-opacity-50'><Icon name="remove" className="text-white" /></button>
                 <span className='font-semibold'>1</span>
-                <button className='bg-primary flex items-center justify-center p-[1px] rounded-sm'><AddOutlined htmlColor='white' fontSize='small' /></button>
+                <button className='bg-primary flex items-center justify-center p-[1px] rounded-sm'><Icon name="add" className="text-white" /></button>
             </div>
         </div>
     )
