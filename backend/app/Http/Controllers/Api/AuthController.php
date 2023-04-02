@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -65,9 +66,14 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->response([
-            ...$this->respondWithToken(auth()->refresh())
-        ]);
+        try {
+            $token = auth()->refresh();
+            return $this->response([
+                ...$this->respondWithToken($token)
+            ]);
+        } catch (JWTException $e) {
+            return $this->response(message: "token expired", code: 401, status: false);
+        }
     }
 
     /**
