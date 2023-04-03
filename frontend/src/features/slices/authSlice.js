@@ -14,7 +14,7 @@ const initialState = {
 
 export const login = createAsyncThunk("auth/login", async ({ email, password }, thunkApi) => {
     try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, { email, password })
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/login`, { email, password })
         return response.data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data);
@@ -23,7 +23,7 @@ export const login = createAsyncThunk("auth/login", async ({ email, password }, 
 })
 export const logout = createAsyncThunk("auth/logout", async (access_token, thunkApi) => {
     try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, { token: access_token })
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/logout`, { token: access_token })
         return response.data;
     } catch (error) {
         return thunkApi.rejectWithValue(error.response.data);

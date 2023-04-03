@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import Invoice from '@/components/Invoice'
 import Sidebar from '@/components/Sidebar'
 import Main from '@/components/Main'
@@ -6,8 +6,10 @@ import { useRouter } from 'next/router'
 import AddProduct from './AddProduct'
 import useAuth from '@/hooks/useAuth'
 
+export const HideContext = createContext(null)
 export default function Layout({ children }) {
     const { pathname } = useRouter()
+    const [hide, setHide] = useState(true)
     const router = useRouter()
     const auth = useAuth()
     useEffect(() => {
@@ -22,15 +24,16 @@ export default function Layout({ children }) {
         return children
     }
     return (
-        <div className='flex h-screen min-w-full'>
-            <Sidebar />
-            <Main>{children}</Main>
-            {/* container */}
-            <div className='flex-none flex flex-col w-96 px-4 max-h-screen overflow-y-auto'>
-                {pathname == "/" && <Invoice />}
-                {pathname == "/dashboard" && <AddProduct />}
+        <HideContext.Provider value={{ hide, setHide }}>
+            <div className='flex h-screen min-w-full'>
+                <Sidebar />
+                <Main>{children}</Main>
+                {/* container */}
+                <div className={`${hide ? "hidden" : "flex absolute top-0 left-0 right-0 bottom-0"} bg-white md:flex-none md:flex flex-col md:w-96 px-4 min-h-screen max-h-screen overflow-y-auto`}>
+                    {pathname == "/" && <Invoice />}
+                    {pathname == "/dashboard" && <AddProduct />}
+                </div>
             </div>
-
-        </div>
+        </HideContext.Provider>
     )
 }

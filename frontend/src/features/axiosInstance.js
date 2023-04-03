@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 
 const refreshToken = async () => {
     try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`, {}, {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/refresh`, {}, {
             headers: {
                 Authorization: `Bearer ${store.getState().auth.access_token}`
             }

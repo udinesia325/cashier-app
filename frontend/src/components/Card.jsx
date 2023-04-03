@@ -2,10 +2,11 @@ import React from 'react'
 import Icon from './Icon'
 
 const defaultImageUrl = "https://source.unsplash.com/random?food&200x200"
-export default function Card({ name = "", price = 0, editable = false,image=defaultImageUrl }) {
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+export default function Card({ name = "", price = 0, editable = false, image = defaultImageUrl }) {
   return (
-    <div className={`bg-white w-[200px] h-[${editable ? "300" : "280px"}] rounded-md p-2 flex flex-col relative`}>
-      <img src={image} alt={`image ${name}`} className='aspect-[6/5] rounded-sm' />
+    <div className={`bg-white w-full md:w-[200px] h-[${editable ? "300" : "280px"}] rounded-md p-2 flex flex-col relative`}>
+      <img src={image != defaultImageUrl ? backendUrl + image : image} alt={`image ${name}`} className='aspect-[6/5] rounded-sm' />
       <h1 className='font-semibold'>{name}</h1>
       <p className='font-semibold text-xs text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel.</p>
       <h3 className='text-xl mt-auto mb-3  font-semibold text-primary'>Rp. {price.toLocaleString("id")}</h3>
