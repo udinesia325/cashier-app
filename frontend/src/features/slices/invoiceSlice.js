@@ -1,4 +1,4 @@
-const { createSlice, createEntityAdapter } = require("@reduxjs/toolkit")
+const { createSlice } = require("@reduxjs/toolkit")
 
 const initialState = {
     products: [],
@@ -7,9 +7,7 @@ const initialState = {
     change: 0,
     total: 0
 }
-const invoiceAdapter = createEntityAdapter({
-    selectId: products => products.uuid
-})
+
 const invoiceSlice = createSlice({
     name: "invoice",
     initialState,

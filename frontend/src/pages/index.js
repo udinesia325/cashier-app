@@ -23,10 +23,10 @@ export default function Home() {
       </Head>
       <main>
         <Heading />
-        <div className="container flex flex-wrap pl-6 gap-y-3 gap-x-2 cursor-pointer">
+        <div className="container grid grid-cols-2 md:flex md:flex-wrap px-1 md:pl-6 gap-y-3 gap-x-1 md:gap-x-2 cursor-pointer">
           {isLoading && <h1 className="text-center text-2xl font-semibold">Loading ...</h1>}
           {data?.length && data.map(d => (
-            <Card key={d.uuid} name={d.name} price={d.price} image={`http://localhost:8000/${d.image}`} />
+            <Card key={d.uuid} name={d.name} price={d.price} image={d.image} />
           ))}
         </div>
       </main>
