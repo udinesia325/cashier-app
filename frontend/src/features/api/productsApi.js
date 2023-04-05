@@ -5,7 +5,7 @@ const productApi = createApi({
     baseQuery: axiosInstance,
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: () => "/products",
+            query: (page = 1) => `/products?page=${page}`,
             transformResponse: response => response.data
         })
     })
