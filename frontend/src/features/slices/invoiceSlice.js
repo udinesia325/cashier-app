@@ -1,4 +1,4 @@
-const { createSlice } = require("@reduxjs/toolkit")
+const { createSlice, createSelector } = require("@reduxjs/toolkit")
 
 const initialState = {
     products: [],
@@ -20,27 +20,42 @@ const invoiceSlice = createSlice({
                     uuid, name, price, image,
                     qty: 1
                 })
-                state.subtotal += price
             } else {
                 state.products[index].qty++
-                state.subtotal += state.products[index].price
             }
         },
         incrementQty(state, action) {
             const index = state.products.findIndex(p => p.uuid == action.payload.uuid)
 
             state.products[index].qty++
-            state.subtotal += state.products[index].price
         },
         decrementQty(state, action) {
             const index = state.products.findIndex(p => p.uuid == action.payload.uuid)
             if (state.products[index].qty >= 1) {
                 state.products[index].qty--
-                state.subtotal -= state.products[index].price
             }
+        },
+        setPay(state, action) {
+            state.pay = action.payload
+        },
+        removeItem(state, action) {
+            state.products = state.products.filter(product => product.uuid != action.payload)
         }
     }
 })
 
-export const { addItem, incrementQty, decrementQty } = invoiceSlice.actions
+export const { addItem, incrementQty, decrementQty, setPay, removeItem } = invoiceSlice.actions
 export default invoiceSlice.reducer
+
+export const selectInvoice = state => state.invoice
+
+export const calculate = createSelector(
+    [selectInvoice],
+    invoice => {
+        const subtotal = invoice.products.reduce((total, product) => {
+            return total + (product.price * product.qty)
+        }, 0)
+        const change = invoice.pay == 0 ? 0 : invoice.pay - subtotal
+        return { subtotal, change, pay: invoice.pay }
+    }
+)

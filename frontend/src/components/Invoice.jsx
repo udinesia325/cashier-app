@@ -1,5 +1,6 @@
+import { calculate, setPay } from '@/features/slices/invoiceSlice'
 import React, { useContext } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CardInvoiceItem from './CardInvoiceItem'
 import Icon from './Icon'
 import InvoiceBill from './InvoiceBill'
@@ -8,6 +9,11 @@ import { HideContext } from './Layout'
 export default function Invoice() {
   const { hide, setHide } = useContext(HideContext)
   const invoiceState = useSelector(state => state.invoice)
+  const { subtotal, pay } = useSelector(calculate)
+  const dispatch = useDispatch()
+  const handlePay = (e) => {
+    dispatch(setPay(e.target.value))
+  }
   return (
     <>
       <h1 className='text-xl font-semibold mt-2 md:mt-10 '>Pesanan</h1>
@@ -22,11 +28,11 @@ export default function Invoice() {
         ))}
       </div>
       {/* input pembayaran */}
-      <input type="number" placeholder='Bayar' className='text-lg py-1 px-2 outline-none font-semibold mt-4 mb-2 border border-gray-300' />
+      <input type="number" placeholder='Bayar' className='text-lg py-1 px-2 outline-none font-semibold mt-4 mb-2 border border-gray-300' value={invoiceState.pay} onChange={handlePay} />
       {/* invoice bill */}
       <InvoiceBill />
       {/* button to payment */}
-      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90'>Selesaikan Pembayaran</button>
+      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90 disabled:bg-opacity-50' disabled={pay < subtotal}>Selesaikan Pembayaran</button>
     </>
   )
 }

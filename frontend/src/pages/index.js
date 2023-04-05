@@ -1,6 +1,7 @@
 import Card from '@/components/Card'
 import Heading from '@/components/Heading'
 import { useGetProductsQuery } from '@/features/api/productsApi'
+import { calculate } from '@/features/slices/invoiceSlice'
 import { setProducts } from '@/features/slices/productsSlice'
 import Head from 'next/head'
 import { useState } from 'react'
@@ -11,8 +12,6 @@ export default function Home() {
   const dispatch = useDispatch()
   const [page, setPage] = useState(1)
   const { data, isLoading } = useGetProductsQuery(page)
-  const invoice = useSelector(state => state.invoice)
-  console.log({ invoice })
   if (data?.length && !isLoading) {
     dispatch(setProducts(data))
   }
