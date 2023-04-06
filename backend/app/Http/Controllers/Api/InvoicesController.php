@@ -24,7 +24,8 @@ class InvoicesController extends Controller
     {
         DB::beginTransaction();
         $jsonData = json_decode($request->input("data"));
-        $subtotal = $this->countSubtotal($jsonData);
+        $subtotal = $request->input("subtotal");
+        $change = $request->input("change");
         $pay = $request->input("pay");
         try {
             $data = Invoice::create([
@@ -35,13 +36,13 @@ class InvoicesController extends Controller
                 "invoice_id" => $data->uuid,
                 "subtotal" => $subtotal,
                 "pay" => $pay,
-                "change" => $pay - $subtotal,
+                "change" => $change,
             ]);
             DB::commit();
             return $this->response(data: $data, message: "created successfully", code: 201);
         } catch (Throwable $e) {
-            return $this->response(null, env("APP_DEBUG") ? $e->getMessage() : "Internal Server Error", 500);
             DB::rollBack();
+            return $this->response(null, env("APP_DEBUG") ? $e->getMessage() : "Internal Server Error", 500);
         }
     }
     public function destroy(Invoice $invoice)

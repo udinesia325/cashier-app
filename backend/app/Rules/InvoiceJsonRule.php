@@ -19,8 +19,8 @@ class InvoiceJsonRule implements ValidationRule
         $dataJson = json_decode($value);
         if (is_array($dataJson)) {
             foreach ($dataJson as $d) {
-                if (!isset($d->name) || !isset($d->price)) {
-                    $fail(":attribute harus memiliki attribut name dan price");
+                if (!isset($d->name) || !isset($d->price) || !isset($d->qty)) {
+                    $fail(":attribute harus memiliki attribut name, price dan qty");
                 }
             }
         } else {
