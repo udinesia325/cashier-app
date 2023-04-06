@@ -24,7 +24,9 @@ class StoreInvoiceRequest extends FormRequest
     {
         return [
             "data" => ["required", "json", new InvoiceJsonRule],
-            "pay" => "required|numeric"
+            "pay" => "required|numeric",
+            "change" => "required|numeric",
+            "subtotal" => "required|numeric",
         ];
     }
 }
