@@ -5,7 +5,6 @@ const initialState = {
     subtotal: 0,
     pay: 0,
     change: 0,
-    total: 0
 }
 
 const invoiceSlice = createSlice({

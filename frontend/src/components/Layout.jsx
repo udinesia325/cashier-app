@@ -23,8 +23,11 @@ export default function Layout({ children }) {
         }
         return children
     }
+    const toggleHide = () => {
+        setHide(!hide)
+    }
     return (
-        <HideContext.Provider value={{ hide, setHide }}>
+        <HideContext.Provider value={toggleHide}>
             <div className='flex h-screen min-w-full'>
                 <Sidebar />
                 <Main>{children}</Main>
