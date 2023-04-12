@@ -39,11 +39,14 @@ const invoiceSlice = createSlice({
         },
         removeItem(state, action) {
             state.products = state.products.filter(product => product.uuid != action.payload)
+        },
+        resetItem(state) {
+            return initialState
         }
     }
 })
 
-export const { addItem, incrementQty, decrementQty, setPay, removeItem } = invoiceSlice.actions
+export const { addItem, incrementQty, decrementQty, setPay, removeItem, resetItem } = invoiceSlice.actions
 export default invoiceSlice.reducer
 
 export const selectInvoice = state => state.invoice

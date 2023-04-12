@@ -31,10 +31,6 @@ export default function Invoice() {
     try {
       const response = await axiosClient.post("invoices", body)
       setUuid(response.data.data.uuid)
-      setInterval(() => {
-        setShowBill(false)
-      }, 500)
-      console.log(response)
     } catch (error) {
       setShowBill(false)
       console.log({ error })
@@ -59,9 +55,9 @@ export default function Invoice() {
       {/* invoice bill */}
       <InvoiceBill />
       {/* button to payment */}
-      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90 disabled:bg-opacity-50' disabled={pay < subtotal} onClick={() => setShowBill(true)}>Selesaikan Pembayaran</button>
+      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90 disabled:bg-opacity-50' disabled={pay < subtotal || subtotal == 0} onClick={() => setShowBill(true)}>Selesaikan Pembayaran</button>
       {/*modal confirmation store invoice*/}
-      {showBill && <ModalInvoice products={invoiceState.products} subtotal={subtotal} pay={pay} change={change} uuid={uuid} submitInvoice={submitInvoice} setShowBill={setShowBill} />}
+      {showBill && <ModalInvoice products={invoiceState.products} subtotal={subtotal} pay={pay} change={change} uuid={uuid} setUuid={setUuid} submitInvoice={submitInvoice} setShowBill={setShowBill} />}
     </>
   )
 }
