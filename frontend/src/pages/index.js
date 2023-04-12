@@ -1,11 +1,10 @@
 import Card from '@/components/Card'
 import Heading from '@/components/Heading'
 import { useGetProductsQuery } from '@/features/api/productsApi'
-import { calculate } from '@/features/slices/invoiceSlice'
 import { setProducts } from '@/features/slices/productsSlice'
 import Head from 'next/head'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 
 export default function Home() {

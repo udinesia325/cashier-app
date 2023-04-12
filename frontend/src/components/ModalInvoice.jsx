@@ -12,7 +12,7 @@ function ModalInvoice({ products, subtotal = 0, pay = 0, change = 0, uuid, setUu
         const img = canvas.toDataURL("image/png")
         const pdf = new jsPDF()
         pdf.addImage(img, 'JPEG', 10, 0)
-        pdf.save()
+        pdf.save(`${uuid}.pdf`)
     }
     const handleCancel = () => {
         if (uuid) {
@@ -70,23 +70,3 @@ function ModalInvoice({ products, subtotal = 0, pay = 0, change = 0, uuid, setUu
 }
 
 export default ModalInvoice
-
-function renderField(left, right) {
-    return (<>
-        <span className='col-span-2'>{left}</span>
-        <span>{right}</span>
-    </>)
-}
-                // <div ref={contentRef} className='w-[283px] grid grid-cols-3 justify-between font-semibold'>
-                //     <span className='text-gray-600 col-span-3 border border-transparent border-b-gray-400 border-dashed mb-6'>id order : {uuid || "auto generate"}</span>
-                //     {products.map((product, _i) => (
-                //         <React.Fragment key={_i}>
-                //             {renderField(product.name, `${product.qty} x ${product.price.toLocaleString('id')}`)}
-                //         </React.Fragment>
-                //     ))}
-                //
-                //     <span className='text-gray-600 col-span-3 border border-transparent border-b-gray-400 border-dashed mt-10'></span>
-                //     {renderField("Pay", "Rp. " + Number(pay).toLocaleString("id"))}
-                //     {renderField("Change", "Rp. " + change.toLocaleString("id"))}
-                //     {renderField("Subtotal", "Rp. " + subtotal.toLocaleString("id"))}
-                // </div>
