@@ -14,9 +14,8 @@ export default function Card({ name = "", uuid, price = 0, editable = false, ima
   }
   return (
     <div className={`bg-white w-full md:w-[200px] h-[${editable ? "300" : "280px"}] rounded-md p-2 flex flex-col relative`}>
-      <img src={image != defaultImageUrl ? backendUrl + image : image} alt={`image ${name}`} className='aspect-[6/5] rounded-sm' />
+      <img src={image == null ? defaultImageUrl : image != defaultImageUrl ? backendUrl + image : image} alt={`image ${name}`} className='aspect-[6/5] rounded-sm' />
       <h1 className='font-semibold'>{name}</h1>
-      <p className='font-semibold text-xs text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel.</p>
       <h3 className='text-xl mt-auto mb-3  font-semibold text-primary'>Rp. {price.toLocaleString("id")}</h3>
       <button className='bg-white bg-opacity-50 p-1 absolute right-3 top-3 rounded-md transition-all duration-200 hover:bg-opacity-70 hover:rounded-sm' onClick={addToCart}>
         <Icon name="shopping_cart" className="text-primary" />

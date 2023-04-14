@@ -54,7 +54,7 @@ axiosClient.interceptors.response.use(
             return axiosClient(prevReq)
 
         }
-        return axiosClient.interceptors.response.eject(error)
+        return error.response
     }
 )
 
