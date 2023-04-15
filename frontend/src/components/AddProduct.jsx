@@ -54,17 +54,16 @@ export default function AddProduct() {
                     Accept: "application/json"
                 }
             })
-            if (response.status >= 400) throw response.data
             setError(initialError)
             messageRef.current.innerHTML = response.data.message
             handleReset()
             dispatch(addProducts(response.data.data))
-            console.log(response)
+            // console.log(response)
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             setError({
                 ...initialError,
-                ...error.errors
+                ...error.data.errors
             })
         }
 

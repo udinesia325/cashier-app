@@ -54,7 +54,7 @@ axiosClient.interceptors.response.use(
             return axiosClient(prevReq)
 
         }
-        return error.response
+        return Promise.reject(error.response)
     }
 )
 

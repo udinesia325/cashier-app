@@ -5,6 +5,8 @@ import Main from '@/components/Main'
 import { useRouter } from 'next/router'
 import AddProduct from './AddProduct'
 import useAuth from '@/hooks/useAuth'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.min.css"
 
 export const HideContext = createContext(null)
 export default function Layout({ children }) {
@@ -37,6 +39,7 @@ export default function Layout({ children }) {
                     {pathname == "/dashboard" && <AddProduct />}
                 </div>
             </div>
+            <ToastContainer position='top-center' />
         </HideContext.Provider>
     )
 }

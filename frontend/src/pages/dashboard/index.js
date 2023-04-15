@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 export default function Index() {
     const toggleHide = useContext(HideContext)
     const { products } = useSelector(state => state.products)
-    // console.log(products)
+    console.log(products)
     return (
         <>
             <Head>
