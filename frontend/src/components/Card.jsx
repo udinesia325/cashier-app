@@ -1,13 +1,13 @@
 import { addItem } from '@/features/slices/invoiceSlice'
 import { deleteProducts } from '@/features/slices/productsSlice'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import Icon from './Icon'
 
 const defaultImageUrl = "https://source.unsplash.com/random?food&200x200"
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
-export default function Card({ name = "", uuid, price = 0, editable = false, image = defaultImageUrl }) {
+export default function Card({ name = "", uuid, price = 0, editable = false, image = defaultImageUrl, setBody }) {
   const dispatch = useDispatch()
   const addToCart = () => {
     dispatch(addItem({
@@ -19,6 +19,9 @@ export default function Card({ name = "", uuid, price = 0, editable = false, ima
     dispatch(deleteProducts(uuid))
     toast.success("deleted")
   }
+  const editItem = () => {
+    setBody({ uuid, name, price, image })
+  }
   return (
     <div className={`bg-white w-full md:w-[200px] h-[${editable ? "300" : "280px"}] rounded-md p-2 flex flex-col relative`}>
       <img src={image == null ? defaultImageUrl : image != defaultImageUrl ? backendUrl + image : image} alt={`image ${name}`} className='aspect-[6/5] rounded-sm' />
@@ -29,7 +32,7 @@ export default function Card({ name = "", uuid, price = 0, editable = false, ima
       </button>
       {editable && (
         <div className='flex w-full gap-2 text-white'>
-          <button className='flex-1 py-1 transition-colors rounded-sm bg-yellow-400 hover:bg-yellow-300'><Icon name="edit" /></button>
+          <button className='flex-1 py-1 transition-colors rounded-sm bg-yellow-400 hover:bg-yellow-300' onClick={editItem}><Icon name="edit" /></button>
           <button className='flex-1 py-1 transition-colors rounded-sm bg-red-400 hover:bg-red-300' onClick={deleteItem}><Icon name="delete" /></button>
         </div>
       )}
