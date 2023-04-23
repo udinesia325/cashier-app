@@ -7,7 +7,6 @@ import Head from 'next/head'
 
 export default function Home() {
   const { products, isLoading, prevPage, nextPage, meta, links } = useProducts()
-  console.log({ meta, links })
   return (
     <>
       <Head>
@@ -30,7 +29,7 @@ export default function Home() {
           {links?.prev ?
             <Icon name="arrow_forward_ios" onClick={prevPage} className="bg-gray-100 hover:bg-gray-200 p-2 rounded-md rotate-180" />
             : null}
-          <h1 className='my-auto mx-2 font-semibold text-2xl'>{meta.current_page}</h1>
+          <h1 className='my-auto mx-2 font-semibold text-2xl'>{meta?.current_page}</h1>
           {links?.next ?
             <Icon name="arrow_forward_ios" onClick={nextPage} className="bg-gray-100 hover:bg-gray-200 p-2 rounded-md" />
             : null}
