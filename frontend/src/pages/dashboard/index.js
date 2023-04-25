@@ -3,6 +3,7 @@ import Card from '@/components/Card'
 import EditProduct from '@/components/EditProduct'
 import Icon from '@/components/Icon'
 import { HideContext } from '@/components/Layout'
+import Paginator from '@/components/Paginator'
 import useProducts from '@/hooks/useProducts'
 import Head from 'next/head'
 import { createContext, useState } from 'react'
@@ -45,18 +46,9 @@ export default function Index() {
                     ))}
                 </div>
 
-
                 {/* paginator */}
-                <div className='w-[90%] max-w-md bg-white rounded-sm m-auto flex justify-center items-center mt-3 p-2 gap-x-2'>
-                    {links?.prev ?
-                        <Icon name="arrow_forward_ios" onClick={prevPage} className="bg-gray-100 hover:bg-gray-200 p-2 rounded-md rotate-180" />
-                        : null}
-                    <h1 className='my-auto mx-2 font-semibold text-2xl'>{meta?.current_page}</h1>
-                    {links?.next ?
-                        <Icon name="arrow_forward_ios" onClick={nextPage} className="bg-gray-100 hover:bg-gray-200 p-2 rounded-md" />
-                        : null}
+                <Paginator links={links} meta={meta} prevPage={prevPage} nextPage={nextPage} />
 
-                </div>
             </div>
         </>
     )
