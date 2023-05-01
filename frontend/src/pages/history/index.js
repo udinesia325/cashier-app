@@ -1,10 +1,12 @@
+import Icon from '@/components/Icon'
+import { HistoryContext } from '@/components/Layout'
 import Paginator from '@/components/Paginator'
 import useHistories from '@/hooks/useHistories'
-import React from 'react'
+import React, { useContext } from 'react'
 
 function Index() {
     const { histories, prevPage, nextPage, meta, links } = useHistories()
-
+    const { setActiveHistory } = useContext(HistoryContext)
     return (
         <div className='px-1 md:px-3 w-full'>
             <table className='table-auto w-full min-w-[368px] mt-24 mx-auto mb-24'>
@@ -15,6 +17,7 @@ function Index() {
                         <th className='p-3'>Subtotal</th>
                         <th className='p-3'>Pay</th>
                         <th className='p-3'>Change</th>
+                        <th className='p-3'>Detail</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +28,10 @@ function Index() {
                             <td className='p-3'>{history?.subtotal.toLocaleString('id')}</td>
                             <td className='p-3'>{history?.pay.toLocaleString('id')}</td>
                             <td className='p-3'>{history?.change.toLocaleString('id')}</td>
+                            <td className='p-3'>
+                                <Icon name="receipt_long" className="p-2 rounded-full text-white bg-green-600" onClick={() => setActiveHistory(history)} />
+
+                            </td>
                         </tr>
                     ))}
                 </tbody>

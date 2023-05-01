@@ -15,7 +15,7 @@ export default function InvoiceBill() {
         </div>
     )
 }
-function renderField(label = "", jumlah = 0) {
+export function renderField(label = "", jumlah = 0) {
     return <p>
         <span className='float-left'>{label} :</span>
         <span className='float-right'>Rp. {jumlah.toLocaleString('id')}</span>
