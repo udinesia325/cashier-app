@@ -1,27 +1,24 @@
-import axiosClient from '@/features/axiosClient'
-import { addProducts } from '@/features/slices/productsSlice'
-import React, { useContext, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { updateProducts } from '@/features/slices/productsSlice'
+import React, { useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from './Icon'
-import { HideContext } from './Layout'
 
 const initialError = {
     name: [],
     image: [],
     price: [],
 }
-export default function AddProduct() {
-    const toggleHide = useContext(HideContext)
+// setBody hanya untuk reset body agar component ini tertutup
+export default function EditProduct({ editBody, closeEdit }) {
     const imageRef = useRef(null)
     const dispatch = useDispatch()
+    const { update } = useSelector(state => state.products)
     const messageRef = useRef(null)
     const [body, setBody] = useState({
-        name: '',
-        price: ''
+        name: editBody?.name,
+        price: editBody?.price,
     })
-    const [error, setError] = useState({
-        ...initialError
-    })
+    const error = update.errors
     const handleChange = (event) => {
         const { name, value } = event.target
         setBody({
@@ -30,48 +27,33 @@ export default function AddProduct() {
         })
 
     }
-    const [image, setImage] = useState(null)
+    const initialImage = process.env.NEXT_PUBLIC_BACKEND_URL + editBody.image
+    const [image, setImage] = useState(initialImage)
     const handleImage = (event) => {
         setImage(URL.createObjectURL(event.target.files[0]))
     }
     const handleReset = () => {
-        setImage(null)
+        setImage(initialImage)
         setBody({ name: '', price: '' })
         setError(initialError)
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
+
         const formData = new FormData()
+        formData.append("_method", "PUT")
         formData.append("name", body.name)
         formData.append("price", body.price)
-        formData.append("image", imageRef.current.files[0])
-
-        messageRef.current.innerHTML = ""
-        try {
-            const response = await axiosClient.post("products", formData, {
-                headers: {
-                    "Content-Type": "multipart/formdata",
-                    Accept: "application/json"
-                }
-            })
-            setError(initialError)
-            messageRef.current.innerHTML = response.data.message
-            handleReset()
-            dispatch(addProducts(response.data.data))
-            // console.log(response)
-        } catch (error) {
-            // console.log(error)
-            setError({
-                ...initialError,
-                ...error.data.errors
-            })
+        if (image != initialImage) {
+            formData.append("image", imageRef.current.files[0])
         }
-
+        dispatch(updateProducts({ uuid: editBody.uuid, formData }))
     }
+
     return (
-        <>
-            <Icon name="clear" className="absolute md:hidden text-[#bbb] right-3 top-6" onClick={toggleHide} />
-            <h1 className='text-center text-3xl font-semibold mt-4 mb-5'>Add New Product</h1>
+        <div className='bg-white absolute z-50 top-0 bottom-0 right-0 left-0 px-5'>
+            <Icon name="clear" className="absolute  text-[#bbb] right-3 top-6" onClick={closeEdit} />
+            <h1 className='text-center text-3xl font-semibold mt-4 mb-5'>Edit Product</h1>
 
             <span className='text-sm text-center text-green-400' ref={messageRef}></span>
             <form action="" className='w-full flex flex-col mt-4 gap-5' onSubmit={handleSubmit}>
@@ -87,16 +69,16 @@ export default function AddProduct() {
     "
                     onChange={handleImage}
                 />
-                <span className='text-xs text-red-400'>{error.image.join(" and ")}</span>
+                <span className='text-xs text-red-400'>{error?.image?.join(" and ")}</span>
                 {image && (
                     <img src={image} alt="" className='aspect-square w-full' />
                 )}
                 <div className="flex w-full gap-2 mt-10  justify-center text-white font-semibold">
                     <button className='flex-1 py-2 transition-colors bg-red-500 hover:bg-red-300' type="reset" onClick={handleReset}>reset</button>
-                    <button className='flex-1 py-2 transition-colors bg-green-500 hover:bg-green-300' type="submit">Submit</button>
+                    <button className='flex-1 py-2 transition-colors bg-green-500 hover:bg-green-300' type="submit" disabled={update.isLoading}>{update.isLoading ? "Loading ..." : "Submit"}</button>
                 </div>
             </form>
-        </>
+        </div>
     )
 }
 function Field({ name, placeholder, type, value, handleChange, error }) {
