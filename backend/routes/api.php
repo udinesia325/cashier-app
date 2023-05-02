@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HistoriesController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\ProductController;
@@ -36,7 +37,7 @@ Route::middleware("jwt")->group(function () {
         ], 404);
     });
 
-    // for invoicea
+    // for invoices
     Route::apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
         return response()->json([
             "status" => false,
@@ -56,4 +57,7 @@ Route::middleware("jwt")->group(function () {
             ], 404);
         })->name("api.histories.show");
     });
+
+    // for dashboard
+    Route::get("/dashboard", DashboardController::class)->name("api.dashboard");
 });
