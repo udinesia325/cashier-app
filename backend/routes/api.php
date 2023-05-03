@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HistoriesController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\ProductController;
@@ -20,11 +21,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('jwt')->prefix('auth')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login')->withoutMiddleware("jwt")->name("api.auth.login");
+        Route::post('register', 'register')->withoutMiddleware("jwt")->name("api.auth.register");
+        Route::post('activate', 'activate')->name("api.auth.activate");
         Route::post('logout', 'logout')->name("api.auth.logout");
         Route::post('refresh', 'refresh')->name("api.auth.refresh");
         Route::post('me', 'me')->name("api.auth.me");
+        Route::get('users', 'index')->name("api.auth.users");
     });
 });
+
 
 Route::middleware("jwt")->group(function () {
     //for products
@@ -36,7 +41,7 @@ Route::middleware("jwt")->group(function () {
         ], 404);
     });
 
-    // for invoicea
+    // for invoices
     Route::apiResource("invoices", InvoicesController::class, ["as" => "api"])->missing(function () {
         return response()->json([
             "status" => false,
@@ -56,4 +61,7 @@ Route::middleware("jwt")->group(function () {
             ], 404);
         })->name("api.histories.show");
     });
+
+    // for dashboard
+    Route::get("/dashboard", DashboardController::class)->name("api.dashboard");
 });

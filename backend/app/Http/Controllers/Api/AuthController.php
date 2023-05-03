@@ -3,11 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    // get all users
+    public function index()
+    {
+        $user = User::get(["email", "role", "is_active"]);
+        return $this->response(compact("user"));
+    }
     /**
      * Get a JWT via given credentials.
      *
@@ -25,13 +36,13 @@ class AuthController extends Controller
             return $this->response(message: 'Unauthorized', status: false, code: 401);
         }
         $user = auth()->user();
+        if ($user->is_active == false) return $this->response(message: "you are not activated, wait an admin", code: 400, status: false);
         return $this->response([
             "name" => $user->name,
             "email" => $user->email,
             "role" => $user->role,
             ...$this->respondWithToken($token)
         ]);
-        return $this->respondWithToken($token);
     }
 
     /**
@@ -90,5 +101,40 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ];
+    }
+    public function register(RegisterRequest $request)
+    {
+        try {
+            User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'email_verified_at' => now(),
+                'password' => Hash::make($request->input('password')),
+                'role' => 'user',
+                'is_active' => false,
+                'remember_token' => Str::random(10),
+            ]);
+            return $this->response(message: "Successfully registered, wait admin for activate");
+        } catch (Exception $e) {
+            return $this->response($e);
+        }
+    }
+    // untuk aktivasi user (harus admin)
+    public function activate(Request $request)
+    {
+        if (auth()->user()->role != "admin") {
+            return $this->response(message: "you're not an admin !", status: false, code: 403);
+        }
+        $request->validate([
+            "email" => "required|email"
+        ]);
+        try {
+            $user = User::where('email', $request->email)
+                ->update(['is_active' => true]);
+            if (!$user) return $this->response(message: "email not found ", code: 404, status: false);
+            return $this->response(message: "Successfully activated! please login");
+        } catch (Exception $e) {
+            return $this->response(message: "internal server error", code: 501, status: false);
+        }
     }
 }

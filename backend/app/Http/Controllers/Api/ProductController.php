@@ -56,7 +56,7 @@ class ProductController extends Controller
             return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
     }
-    public function update(UpdateProductRequest $request, Products $products)
+    public function update(UpdateProductRequest $request, Products $product)
     {
         $input = $request->only("name", "price");
         $image = $request->file("image");
@@ -64,15 +64,17 @@ class ProductController extends Controller
         if ($image) {
             $filename = $path . Str::random(4) . time() . "." . $image->getClientOriginalExtension();
             // hapus gambar lama 
-            unlink(public_path($products->image));
+            if (strlen($product->image) > 0) {
+                unlink(public_path($product->image));
+            }
             $image->move($path, $filename);
         }
         try {
-            $products->name = $input["name"];
-            $products->price = $input["price"];
-            $products->image =  $image ? $filename : $products->image;
-            $products->save();
-            return $this->response($products, "product updated successfully");
+            $product->name = $input["name"];
+            $product->price = $input["price"];
+            $product->image = $image ? $filename : $product->image;
+            $product->save();
+            return $this->response($product, "product updated successfully");
         } catch (Throwable $e) {
             return $this->response(message: env("APP_DEBUG") ? $e->getMessage() : "Internal server error", code: 501, status: false);
         }
