@@ -9,7 +9,8 @@ function Index() {
     const { setActiveHistory } = useContext(HistoryContext)
     return (
         <div className='px-1 md:px-3 w-full'>
-            <table className='table-auto w-full min-w-[368px] mt-24 mx-auto mb-24'>
+            <h1 className='text-4xl font-semibold mt-6 mb-4'>History Order</h1>
+            <table className='table-auto w-full min-w-[368px] mt-6 mx-auto mb-24'>
                 <thead>
                     <tr className='bg-gray-200'>
                         <th className='p-3'>N</th>

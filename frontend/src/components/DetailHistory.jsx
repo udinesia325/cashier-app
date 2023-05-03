@@ -9,7 +9,7 @@ function DetailHistory() {
     // jika tidak ada history terpilih maka return null
     if (!activeHistory.pay) return null
     return (
-        <div className='bg-gray-100  mt-4 mb-3 flex flex-col gap-y-3 font-semibold p-2  text-gray-500'>
+        <div className='bg-gray-100  mt-20 mb-3 flex flex-col gap-y-3 font-semibold p-2  text-gray-500'>
             <p className='line-clamp-1'>id : {activeHistory.invoice_id}</p>
             {activeHistory.invoice.data.map((inv, _i) => (
                 renderField(`${inv.name} | ${inv.qty} x ${formatNumber(inv.price)}`, inv.price * inv.qty)
