@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Exception;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\PayloadException;
@@ -11,7 +10,6 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenBlacklistedException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
-use Psr\Http\Message\ResponseInterface;
 
 class Jwt
 {

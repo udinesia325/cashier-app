@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Products;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,14 +23,8 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make(config('auth.admin.password')),
             'role' => 'admin',
+            'is_active' => true,
             'remember_token' => Str::random(10),
         ]);
-        for ($i = 0; $i <= 50; $i++) {
-            Products::create([
-                "name" => fake()->name(),
-                "price" => fake()->numberBetween(40000, 80000),
-                "image" => ""
-            ]);
-        }
     }
 }
