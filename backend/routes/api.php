@@ -26,6 +26,7 @@ Route::middleware('jwt')->prefix('auth')->group(function () {
         Route::post('logout', 'logout')->name("api.auth.logout");
         Route::post('refresh', 'refresh')->name("api.auth.refresh");
         Route::post('me', 'me')->name("api.auth.me");
+        Route::get('users', 'index')->name("api.auth.users");
     });
 });
 

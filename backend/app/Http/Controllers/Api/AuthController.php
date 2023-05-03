@@ -13,6 +13,12 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    // get all users
+    public function index()
+    {
+        $user = User::get(["email", "role", "is_active"]);
+        return $this->response(compact("user"));
+    }
     /**
      * Get a JWT via given credentials.
      *
