@@ -39,12 +39,12 @@ export default function Invoice() {
   }
   return (
     <>
-      <h1 className='text-xl font-semibold mt-2 md:mt-10 '>Pesanan</h1>
+      <h1 className='text-xl font-semibold mt-2 md:mt-10 '>Current Order</h1>
       <Icon name="clear" className="absolute text-[#bbb] right-6 top-4 md:hidden" onClick={toggleHide} />
       {/* Card invoice */}
       <div className='md:flex-1 flex flex-col gap-y-4 mt-5 h-[290px] md:min-h-[200px] md:max-h-[50%] overflow-auto'>
         {invoiceState.products.length == 0 ?
-          <h1 className="font-semibold text-center">Tidak Ada Item</h1>
+          <h1 className="font-semibold text-center">No Item</h1>
           : null}
         {invoiceState.products.map(product => (
           <CardInvoiceItem key={product.uuid} {...product} />
@@ -55,7 +55,7 @@ export default function Invoice() {
       {/* invoice bill */}
       <InvoiceBill />
       {/* button to payment */}
-      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90 disabled:bg-opacity-50' disabled={pay < subtotal || subtotal == 0} onClick={() => setShowBill(true)}>Selesaikan Pembayaran</button>
+      <button className='bg-primary font-semibold text-white py-2 my-5 hover:bg-opacity-90 disabled:bg-opacity-50' disabled={pay < subtotal || subtotal == 0} onClick={() => setShowBill(true)}>Finish Order</button>
       {/*modal confirmation store invoice*/}
       {showBill && <ModalInvoice products={invoiceState.products} subtotal={subtotal} pay={pay} change={change} uuid={uuid} setUuid={setUuid} submitInvoice={submitInvoice} setShowBill={setShowBill} />}
     </>

@@ -13,7 +13,6 @@ export default function NavItem() {
             <ul className='flex flex-col gap-y-6 mt-12'>
                 <NavLink IconName="home" active="/" />
                 <NavLink IconName="dashboard" active="/dashboard" />
-                <NavLink IconName="donut_small" active="/rekapan" />
                 <NavLink IconName="bookmark" active="/history" />
             </ul>
             <ul className='mt-auto flex flex-col gap-y-6 mb-10'>
@@ -25,3 +24,4 @@ export default function NavItem() {
         </>
     )
 }
+// <NavLink IconName="donut_small" active="/rekapan" />
