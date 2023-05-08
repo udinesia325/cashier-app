@@ -5,7 +5,6 @@ import Main from '@/components/Main'
 import { useRouter } from 'next/router'
 import AddProduct from './AddProduct'
 import useAuth from '@/hooks/useAuth'
-import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.min.css"
 import DetailHistory from './DetailHistory'
 
@@ -18,11 +17,13 @@ export default function Layout({ children }) {
     const router = useRouter()
     const auth = useAuth()
     useEffect(() => {
-        if (auth.name == '') {
+        if (auth.name == '' && pathname != "/register") {
             router.push("/login")
         }
     }, [pathname, auth])
-    if (pathname == "/login") {
+
+    // exclude layout here
+    if (pathname == "/login" || pathname == "/register") {
         if (auth.name) {
             router.push("/")
         }
@@ -45,7 +46,6 @@ export default function Layout({ children }) {
                         {pathname == "/history" && <DetailHistory />}
                     </div>
                 </div>
-                <ToastContainer position='top-center' />
             </HistoryContext.Provider>
         </HideContext.Provider>
     )
