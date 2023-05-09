@@ -21,6 +21,7 @@ const initialState = {
 export const deleteProducts = createAsyncThunk("products/deleteProducts", async (uuid, thunkApi) => {
     try {
         await axiosClient.delete(`products/${uuid}`)
+        toast.success('successfully deleted !')
         return uuid
     } catch (err) {
         return thunkApi.rejectWithValue(err.data)

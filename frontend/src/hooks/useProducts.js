@@ -1,7 +1,7 @@
 import axiosClient from "@/features/axiosClient"
 import { setProducts } from "@/features/slices/productsSlice"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import useSWR from "swr"
 
 const useProducts = () => {
@@ -17,7 +17,7 @@ const useProducts = () => {
     // console.log(data)
     const nextPage = () => setPage(page + 1)
     const prevPage = () => setPage(page - 1)
-    return { products: data?.data, nextPage, prevPage, isLoading, error, meta: data?.meta, links: data?.links }
+    return { products: useSelector(state => state.products.products), nextPage, prevPage, isLoading, error, meta: data?.meta, links: data?.links }
 }
 
 export default useProducts

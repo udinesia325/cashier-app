@@ -1,18 +1,21 @@
 import Icon from '@/components/Icon'
-import { login } from '@/features/slices/authSlice'
-import useAuth from '@/hooks/useAuth'
+import axiosClient from '@/features/axiosClient'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
-export default function Login() {
-    const dispatch = useDispatch()
-    const auth = useAuth()
-    const { errors, message } = auth
+export default function Register() {
+    const router = useRouter()
     const [body, setBody] = useState({
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        password_confirmation: "",
     })
+    const [errors, setErrors] = useState({})
+    const [message, setMessage] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const onChange = (e) => {
         setBody(prev => {
             return {
@@ -21,20 +24,34 @@ export default function Login() {
             }
         })
     }
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        dispatch(login(body))
+        setIsLoading(true)
+        setErrors({})
+        setMessage('')
+        try {
+            const response = await axiosClient.post("/auth/register", body)
+            setIsLoading(false)
+            toast.success(response.data?.message)
+            router.push("/login")
+        } catch (e) {
+            setIsLoading(false)
+            toast.error(e.data?.message)
+            setErrors(e.data.errors)
+        }
     }
     return (
         <div className='w-full h-screen flex'>
             <form className='w-96 h-max shadow-md shadow-gray-200 rounded-sm m-auto -translate-y-32 flex flex-col gap-y-3 items-center px-3 py-4' onSubmit={handleSubmit}>
-                <h1 className='text-center font-semibold text-3xl'>Cashier App</h1>
+                <h1 className='text-center font-semibold text-3xl'>Register</h1>
                 <p className='text-red-400 text-sm'>{message}</p>
+                <RenderField label="Name" type="text" value={body} onChange={onChange} message={errors?.name || ''} />
                 <RenderField label="Email" type="email" value={body} onChange={onChange} message={errors?.email || ''} />
 
-                <RenderPasswordField label="Password" type="password" value={body} onChange={onChange} message={errors?.password || ''} />
-                <p className='text-sm self-start ml-4'>Dont have an account yet ? <Link href="/register" className='text-primary font-semibold'>Register</Link> </p>
-                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={auth.loading}>{auth.loading ? "Loading ..." : "Login"}</button>
+                <RenderPasswordField label="Password" value={body} onChange={onChange} message={errors?.password || ''} />
+                <RenderPasswordField label="Password_confirmation" value={body} onChange={onChange} message={errors?.password_confirmation || ''} />
+                <p className='text-sm self-start ml-4'>Already have an account ? <Link href="/login" className='text-primary font-semibold'>Login</Link> </p>
+                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={isLoading}>{isLoading ? "Loading ..." : "Submit"}</button>
             </form>
         </div >
     )
