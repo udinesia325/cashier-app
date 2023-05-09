@@ -33,7 +33,7 @@ export default function Login() {
                 <RenderField label="Email" type="email" value={body} onChange={onChange} message={errors?.email || ''} />
 
                 <RenderPasswordField label="Password" type="password" value={body} onChange={onChange} message={errors?.password || ''} />
-                <Link href="/register">register</Link>
+                <p className='text-sm self-start ml-4'>Dont have an account yet ? <Link href="/register" className='text-primary font-semibold'>Register</Link> </p>
                 <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={auth.loading}>{auth.loading ? "Loading ..." : "Login"}</button>
             </form>
         </div >

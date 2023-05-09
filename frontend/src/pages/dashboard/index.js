@@ -21,7 +21,7 @@ export default function Index() {
         return response.data
     }
     const { data } = useSWR("/dashboard", fetcher)
-    console.log({ data })
+    // console.log({ data })
     // payload for edit data
 
     const [body, setBody] = useState({

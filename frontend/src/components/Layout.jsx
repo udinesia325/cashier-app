@@ -29,6 +29,7 @@ export default function Layout({ children }) {
         }
         return children
     }
+    if (pathname == "/register") return children
     const toggleHide = () => {
         setHide(!hide)
     }

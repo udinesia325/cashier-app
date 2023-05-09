@@ -1,5 +1,6 @@
 import Icon from '@/components/Icon'
 import axiosClient from '@/features/axiosClient'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -49,7 +50,8 @@ export default function Register() {
 
                 <RenderPasswordField label="Password" value={body} onChange={onChange} message={errors?.password || ''} />
                 <RenderPasswordField label="Password_confirmation" value={body} onChange={onChange} message={errors?.password_confirmation || ''} />
-                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={isLoading}>{isLoading ? "Loading ..." : "Login"}</button>
+                <p className='text-sm self-start ml-4'>Already have an account ? <Link href="/login" className='text-primary font-semibold'>Login</Link> </p>
+                <button type="submit" className='bg-primary text-white py-2 w-40 font-semibold rounded-sm disabled:bg-opacity-60 mt-6 mb-3' disabled={isLoading}>{isLoading ? "Loading ..." : "Submit"}</button>
             </form>
         </div >
     )

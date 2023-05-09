@@ -15,9 +15,7 @@ export default function Card({ name = "", uuid, price = 0, editable = false, ima
     }))
   }
   const deleteItem = () => {
-    console.log("oke")
     dispatch(deleteProducts(uuid))
-    toast.success("deleted")
   }
   const editItem = () => {
     setBody({ uuid, name, price, image })
