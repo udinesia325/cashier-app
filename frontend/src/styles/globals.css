@@ -25,5 +25,22 @@
     -webkit-font-smoothing: antialiased;
 }
 
+@layer base {
+   thead tr {
+       @apply bg-gray-200;
+   }
+   th,td{
+       @apply p-3;
+   }
+}
+@layer components {
+    .table {
+        @apply table-auto w-full min-w-[368px] mt-6 mx-auto mb-24;
+    }
+}
 
-
+@layer utilities{
+    .td-line-clamp{
+        @apply max-w-[80px] text-ellipsis whitespace-nowrap overflow-hidden;
+    }
+}

@@ -7,13 +7,16 @@ import NavLink from './NavLink'
 
 export default function NavItem() {
     const dispatch = useDispatch()
-    const { access_token } = useAuth()
+    const { access_token, role } = useAuth()
     return (
         <>
             <ul className='flex flex-col gap-y-6 mt-12'>
                 <NavLink IconName="home" active="/" />
                 <NavLink IconName="dashboard" active="/dashboard" />
                 <NavLink IconName="bookmark" active="/history" />
+                {role == 'admin' ?
+                    < NavLink IconName="group_add" active="/users" />
+                    : null}
             </ul>
             <ul className='mt-auto flex flex-col gap-y-6 mb-10'>
                 <NavLink IconName="settings" active="setting" />
@@ -24,4 +27,3 @@ export default function NavItem() {
         </>
     )
 }
-// <NavLink IconName="donut_small" active="/rekapan" />
