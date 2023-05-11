@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,8 +17,13 @@ class AuthController extends Controller
     // get all users
     public function index()
     {
-        $user = User::get(["email", "role", "is_active"]);
-        return $this->response(compact("user"));
+        $users = UserResource::collection(User::paginate(config("app.data_per_page")));
+
+        $users->with = [
+            "status" => true,
+            "message" => "All users",
+        ];
+        return $users;
     }
     /**
      * Get a JWT via given credentials.
