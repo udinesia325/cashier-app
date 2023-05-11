@@ -39,11 +39,13 @@ export default function Layout({ children }) {
                     <Sidebar />
                     <Main>{children}</Main>
                     {/* container */}
-                    <div className={`${hide ? "hidden" : "flex absolute top-0 left-0 right-0 bottom-0"} bg-white md:flex-none md:flex flex-col md:w-96 px-4 min-h-screen max-h-screen overflow-y-auto`}>
-                        {pathname == "/" && <Invoice />}
-                        {pathname == "/dashboard" && <AddProduct />}
-                        {pathname == "/history" && <DetailHistory />}
-                    </div>
+                    {pathname != "/users" ?
+                        <div className={`${hide ? "hidden" : "flex absolute top-0 left-0 right-0 bottom-0"} bg-white md:flex-none md:flex flex-col md:w-96 px-4 min-h-screen max-h-screen overflow-y-auto`}>
+                            {pathname == "/" && <Invoice />}
+                            {pathname == "/dashboard" && <AddProduct />}
+                            {pathname == "/history" && <DetailHistory />}
+                        </div> : null
+                    }
                 </div>
             </HistoryContext.Provider>
         </HideContext.Provider>
